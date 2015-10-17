@@ -1,15 +1,16 @@
 import os, re
 
 from mapManager import MapManager
-import chunk
 
 class Map:
-    def __init__(self, name, path):
+    def __init__(self, name, BASE_PATH_LIST):
         self.name = name
-        self.path = path
+        self.BASE_PATH_LIST = BASE_PATH_LIST
+        self.pathlist = MapManager.BASE_PATH + [self.name,]
+        self.path = os.path.join(*self.pathlist)
         self.precedence = 0
         self.seed = 0
-        path = os.path.join(os.path.join(*list(MapManager.BASE_PATH + [self.name, "properties.txt"])))
+        path = os.path.join(*list(self.pathlist + ["properties.txt"]))
         if not os.path.isfile(path):
             print ("[Map] Error: No properties.txt found at \"" + path + "\". Creating an empty one.")
             if not os.path.exists(os.path.dirname(path)):
@@ -30,35 +31,35 @@ class Map:
                             self.seed = float(words[1])
                         except:
                             pass
-        self.loadChunks()
+        self.loadChunkFiles()
 
-    def isChunkLoaded(self, x,y):
-        for chunkFile in self.chunk_files:
-            parsedName = re.split(r'\s+|[,.]\s*', chunkFile)
-            if parsedName[0] == str(x) and parsedName [1] == str(y):
-                return True
-        return False
-
-    def loadChunks(self):
-        LOAD_PATH = MapManager.BASE_PATH + [self.name, "chunks"]
+    def loadChunkFiles(self):
+        LOAD_PATH = self.pathlist + ["chunks"]
         if not os.path.exists(os.path.join(*LOAD_PATH)):
-            print ("[Map] Error: No chunks folder found. Creating an empty one.")
+            print("[Map] Error: No chunks folder found. Creating an empty one.")
             os.makedirs(os.path.join(*LOAD_PATH))
         files = [f for f in os.listdir(os.path.join(*LOAD_PATH)) if os.path.isfile(os.path.join(*list(LOAD_PATH + [f])))]
-        self.chunk_files = [f for f in files if len(f) >= 9 and f[-6:] == ".chunk"]
+        self.chunk_files = [os.path.join(*list(LOAD_PATH + [f])) for f in files if len(f) >= 9 and f[-6:] == ".chunk"]
 
-    def loadChunk(self,chunkx, chunky):
-        #Search loaded chunks to see if the desired chunk already exists
-        for chunkFile in self.chunk_files:
-            parsedName = re.split(r'\s+|[,.]\s*', chunkFile)
-            if parsedName[0] == str(chunkx) and parsedName [1] == str(chunky):
-                loadedChunk = chunk.Chunk(chunkx,chunky)
-                loadedChunk.path = chunkFile
-                loadedChunk.fromFile(chunkx,chunky)
-                return loadedChunk
-        #If the desired chunk does not exist, tell Chunk to create one
-        genChunk = chunk.Chunk(chunkx, chunky)
-        genChunk.generateDataAndDefs()
-        genChunk.toFile()
-        self.loadChunks()
-        return chunk.Chunk(chunkx,chunky)
+#    def isChunkLoaded(self, x, y):
+#        for chunkFile in self.chunk_files:
+#            parsedName = re.split(r'\s+|[,.]\s*', chunkFile)
+#            if parsedName[0] == str(x) and parsedName [1] == str(y):
+#                return True
+#        return False
+
+#    def loadChunk(self, chunkx, chunky):
+#        #Search loaded chunks to see if the desired chunk already exists
+#        for chunkFile in self.chunk_files:
+#            parsedName = re.split(r'\s+|[,.]\s*', chunkFile)
+#            if parsedName[0] == str(chunkx) and parsedName [1] == str(chunky):
+#                loadedChunk = Chunk(chunkx, chunky)
+#                loadedChunk.path = chunkFile
+#                loadedChunk.fromFile(chunkx, chunky)
+#                return loadedChunk
+#        #If the desired chunk does not exist, tell Chunk to create one
+#        genChunk = Chunk(chunkx, chunky)
+#        genChunk.generateDataAndDefs()
+#        genChunk.toFile()
+#        self.loadChunks()
+#        return Chunk(chunkx,chunky)

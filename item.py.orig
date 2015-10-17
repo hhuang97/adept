@@ -14,14 +14,18 @@ class Item():
         Static item information
         """
         self.name = name
-        info = dict() # yaml files messed up json serialization, works as long as it's not a self. variable
+        info = dict() #yaml files messed up json serialization, works as long as it's not a self. variable
 
         ITEM_FILE = os.path.join(os.path.join(*list(Item.BASE_PATH + [self.name + ".yml"])))
         try:
             with open(ITEM_FILE, "r") as iFile:
                 info = yaml.load(iFile.read())
         except Exception as e:
+<<<<<<< .merge_file_gHZXaS
+            print "Error: Item " + name + " does not exist."
+=======
             print("Error: Item " + str(_id) + " does not exist.")
+>>>>>>> .merge_file_aqU9Ht
 
         """
         Special Values per Type:
@@ -58,8 +62,8 @@ class Item():
         try:
             self.surface = pygame.image.load(IMG_FILE)
         except Exception as e:
-            print("Error: Icon for item " + str(name) + " does not exist.")
-            print(e)
+            print "Error: Icon for item " + str(name) + " does not exist."
+            print e
         # else:
         #     self.surface.fill((random.random() * 255, random.random() * 255, random.random() * 255, 255))
 

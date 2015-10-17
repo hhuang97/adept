@@ -1,73 +1,37 @@
-define f as #005c09
-define r as #00765d
-define t as #ccf2ff
-define m as #5f5f5f
-define d as #ffe5a7
-define p as #ffffff
-define g as #018e0e
-define s as #ffd16e
-define o as #0000ff
-o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o 
-o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o 
-o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o 
-o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o 
-o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o 
-o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o 
-o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o 
-o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o 
-o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o 
-o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o 
-o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o 
-o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o 
-o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o 
-o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o 
-o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o 
-o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o 
-o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o 
-o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o s s s s o o o o o o o o o o o o o o o o o o o o o o o o o o o o o 
-o o o o o o o o o o o o o o o o o o o o o o o o o o o o o s s s s s s s s s o o o o o o o o o o o o o o o o o o o o o o o o o o 
-o o o o o o o o o o o o o o o o o o o o o o o o o o o s s s s s s s s s s s s s o o o o o o o o o o o o o o o o o o o o o o o o 
-o o o o o o o o o o o o o o o o o o o o o o o s s s s s s s s s s s s s s s s s s s o o o o o o o o o o o o o o o o o o o o o o 
-o o o o o o o o o o o o o o o o o o o o o o s s s s s s s s s s s s s s s s s s s s s s s o o o o o o o o o o o o o o o o o o o 
-o o o o o o o o o o o o o o o o s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s o o o o o o o o o 
-o o o o o o o o o o o o o o o s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s o o o o o o o 
-o o o o o o o o o o o s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s o o o 
-o o o o o o o o o o s s s s s s s s s s s s s s s s r f f f f f s s s s s s f f s s s s s s g g g g g g g g s s s s s s s s s s 
-o o o o o o o o s s s s s s s s s s s s s s s s r r r f f f f f f f f f f f f f s s s s f g g g g g g g g g g g s s s s s s s s 
-o o o o s s s s s s s s s s s s s s s s s s s r r r r f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g s s s s s 
-o o o s s s s s s s s r r r r r s s s s s r r r r r r f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g 
-s s s s s s s s s s s r r r r r s s s s s r r r r r r f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g 
-s s s s s s s s s s r r r r r r r s s r r r r r r r f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g 
-s s s s s s r r r s r r r r r r r r r r r r r r r f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g 
-s s s s r r r r r r r r r r r r r r r r r r r r r f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-s s r r r r r r r r r r r r r r r r r r r r r r r f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r r r r r r r r r r r r r r r r r r r r f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r r r r r r r r r r f r r r r r r f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r r r r r r r r r f f f f f r f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r r r r r r r r r f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r r r r r r r r f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r r r r r r f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r r r r f f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r r r f f f f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r r f f f f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r r f f f f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r r r f f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r r r f f f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r r r r f f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r r r r r f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r r r r r f f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r r r r r f f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r r r r r f f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r r r r f f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r r r f f f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r r f f f f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-r r r r r r f f f f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-f r r r f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g 
-f f f f f f f f f f f f f f f f f f f f f f f f f g g g g g g f f g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g 
+define r as #FF0000
+define g as #00FF00
+define b as #0000FF
+define n as #000000
+
+b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b
+b n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n b
+b n b b b b b b b b b b b b b b b b b b b b b b b b b b b b n b
+b n b n n n n n n n n n n n n n n n n n n n n n n n n n n b n b
+b n b n b b b b b b b b b b b b b b b b b b b b b b b b n b n b
+b n b n b n n n n n n n n n n n n n n n n n n n n n n b n b n b
+b n b n b n b b b b b b b b b b b b b b b b b b b b n b n b n b
+b n b n b n b n n n n n n n n n n n n n n n n n n b n b n b n b
+b n b n b n b n b b b b b b b b b b b b b b b b n b n b n b n b
+b n b n b n b n b n n n n n n n n n n n n n n b n b n b n b n b
+b n b n b n b n b n b b b b b b b b b b b b n b n b n b n b n b
+b n b n b n b n b n b n n n n n n n n n n b n b n b n b n b n b
+b n b n b n b n b n b n b b b b b b b b n b n b n b n b n b n b
+b n b n b n b n b n b n b n n n n n n b n b n b n b n b n b n b
+b n b n b n b n b n b n b n b b b b n b n b n b n b n b n b n b
+b n b n b n b n b n b n b n b n n b n b n b n b n b n b n b n b
+b n b n b n b n b n b n b n b b b b n b n b n b n b n b n b n b
+b n b n b n b n b n b n b n n n n n n b n b n b n b n b n b n b
+b n b n b n b n b n b n b b b b b b b b n b n b n b n b n b n b
+b n b n b n b n b n b n n n n n n n n n n b n b n b n b n b n b
+b n b n b n b n b n b b b b b b b b b b b b n b n b n b n b n b
+b n b n b n b n b n n n n n n n n n n n n n n b n b n b n b n b
+b n b n b n b n b b b b b b b b b b b b b b b b n b n b n b n b
+b n b n b n b n n n n n n n n n n n n n n n n n n b n b n b n b
+b n b n b n b b b b b b b b b b b b b b b b b b b b n b n b n b
+b n b n b n n n n n n n n n n n n n n n n n n n n n n b n b n b
+b n b b b b b b b b b b b b b b b b b b b b b b b b b b b b n b
+b n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n b
+b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b
+r g r g r g r g r g r g r g r g r g r g r g r g r g r g r g r g
+g r g r g r g r g r g r g r g r g r g r g r g r g r g r g r g r
+r g r g r g r g r g r g r g r g r g r g r g r g r g r g r g r g 

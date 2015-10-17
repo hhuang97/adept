@@ -4,10 +4,6 @@ import pygame
 
 from buffalo import utils
 
-from mapManager import *
-from mapGenerator import *
-from biome import Biome
-
 """
 A Chunk is a data structure
 that holds tiles.
@@ -37,10 +33,12 @@ class Chunk:
                     dictionary self.defs, returns an RGBA 4-tuple
         """
         self.path = None
-        search_string = "{0},{1}.chunk".format(x, y)
         for m in MapManager.maps:
-            if search_string in m.chunk_files:
-                self.path = os.path.join(*list(m.path + [search_string]))
+            search_path_list = m.pathlist + ["chunks", "{0},{1}.chunk".format(x, y)]
+            search_path_string = os.path.join(*search_path_list)
+            if search_path_string in m.chunk_files:
+                self.pathlist = search_path_list
+                self.path = search_path_string
                 break
         self.pos = x,y
         self.defs = dict()
@@ -72,6 +70,7 @@ class Chunk:
         if not os.path.isfile(self.path):
             print("Could not load chunk in path '" + self.path + "'.")
             return
+        
         with open(self.path,"r") as chunkFile:
             # Keep track of which row of data we want to fill
             row = 0
@@ -98,7 +97,7 @@ class Chunk:
 
                     else: # If we aren't looking at a correctly formatted definition
 
-                        # Then interprate the line as chunk data
+                        # Then interpret the line as chunk data
                         for col, key in enumerate(splitted):
                             if col < Chunk.CHUNK_WIDTH and row < Chunk.CHUNK_HEIGHT:
                                 self.data[row][col] = key
@@ -157,3 +156,7 @@ class Chunk:
                     #At each data point: write data, add white space
                     chunkFile.write(str(col) + " ")
                 chunkFile.write("\n") #New line at end of each row
+
+from mapManager import MapManager
+from mapGenerator import MapGenerator
+from biome import Biome

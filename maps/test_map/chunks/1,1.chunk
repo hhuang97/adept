@@ -1,0 +1,37 @@
+define r as #FF0000
+define g as #00FF00
+define b as #0000FF
+define n as #000000
+
+r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r
+r n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n r
+r n r r r r r r r r r r r r r r r r r r r r r r r r r r r r n r
+r n r n n n n n n n n n n n n n n n n n n n n n n n n n n r n r
+r n r n r r r r r r r r r r r r r r r r r r r r r r r r n r n r
+r n r n r n n n n n n n n n n n n n n n n n n n n n n r n r n r
+r n r n r n r r r r r r r r r r r r r r r r r r r r n r n r n r
+r n r n r n r n n n n n n n n n n n n n n n n n n r n r n r n r
+r n r n r n r n r r r r r r r r r r r r r r r r n r n r n r n r
+r n r n r n r n r n n n n n n n n n n n n n n r n r n r n r n r
+r n r n r n r n r n r r r r r r r r r r r r n r n r n r n r n r
+r n r n r n r n r n r n n n n n n n n n n r n r n r n r n r n r
+r n r n r n r n r n r n r r r r r r r r n r n r n r n r n r n r
+r n r n r n r n r n r n r n n n n n n r n r n r n r n r n r n r
+r n r n r n r n r n r n r n r r r r n r n r n r n r n r n r n r
+r n r n r n r n r n r n r n r n n r n r n r n r n r n r n r n r
+r n r n r n r n r n r n r n r r r r n r n r n r n r n r n r n r
+r n r n r n r n r n r n r n n n n n n r n r n r n r n r n r n r
+r n r n r n r n r n r n r r r r r r r r n r n r n r n r n r n r
+r n r n r n r n r n r n n n n n n n n n n r n r n r n r n r n r
+r n r n r n r n r n r r r r r r r r r r r r n r n r n r n r n r
+r n r n r n r n r n n n n n n n n n n n n n n r n r n r n r n r
+r n r n r n r n r r r r r r r r r r r r r r r r n r n r n r n r
+r n r n r n r n n n n n n n n n n n n n n n n n n r n r n r n r
+r n r n r n r r r r r r r r r r r r r r r r r r r r n r n r n r
+r n r n r n n n n n n n n n n n n n n n n n n n n n n r n r n r
+r n r r r r r r r r r r r r r r r r r r r r r r r r r r r r n r
+r n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n r
+r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r
+b g b g b g b g b g b g b g b g b g b g b g b g b g b g b g b g
+g b g b g b g b g b g b g b g b g b g b g b g b g b g b g b g b
+b g b g b g b g b g b g b g b g b g b g b g b g b g b g b g b g
