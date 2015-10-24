@@ -6,7 +6,7 @@ class Inventory():
     def __init__(self, **kwargs):
 
         self.INV_SIZE_X = 10
-        self.INV_SIZE_Y = 3
+        self.INV_SIZE_Y = 4
 
         self.items = [[None]*self.INV_SIZE_Y for _ in range(self.INV_SIZE_X)]
         self.hotbar = [None]*self.INV_SIZE_X
@@ -14,14 +14,11 @@ class Inventory():
         self.items[0][0] = Item("dagger")
         self.items[0][0].quantity = 2
         self.items[1][0] = Item("book")
-<<<<<<< HEAD
-        self.items[2][0] = Item("potion")
-        self.items[3][0] = Item("arrow") # added for projectile testing purposes
-=======
         self.items[1][0].quantity = 10
         self.items[2][0] = Item("test")
+        self.items[3][0] = Item("arrow") # for projectile testing
+        self.items[3][0].quantity = 5
         self.update()
->>>>>>> 3777040b8dd617a51aab0c33c0d21c0a44e729ec
 
     def addItem(self, item):
         for x in range(self.INV_SIZE_X):
@@ -30,7 +27,7 @@ class Inventory():
                     self.items[x][y] = item
                     return
 
-    def addItemQuantity(self,item, quantity):
+    def addItemQuantity(self, item, quantity):
         pass
 
     def removeItem(self, item):
@@ -82,10 +79,8 @@ class Inventory():
         for x in range(INV_SIZE_X):
             if hotbar[x] == None:
                 hotbar[x] = item
-<<<<<<< HEAD
                 return
-=======
-                return
+            
     def update(self):
         for x in range(self.INV_SIZE_X):
             for y in range(self.INV_SIZE_Y):
@@ -94,4 +89,3 @@ class Inventory():
                 if self.items[x][y] is not None:
                     self.items[x][y].update()
 
->>>>>>> 3777040b8dd617a51aab0c33c0d21c0a44e729ec
