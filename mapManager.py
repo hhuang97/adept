@@ -48,6 +48,7 @@ class MapManager:
             for LCx, chunkx in enumerate(range(xbegin, xend)):
                 MapManager.loadedChunks[LCy][LCx] = Chunk(chunkx, chunky)
         camera.Camera.c_offset = centralx, centraly
+        
 
 from Map import Map
 from pluginManager import PluginManager

@@ -16,7 +16,7 @@ class InventoryUI:
 	def resetSurface(self):
 		self.surface = utils.empty_surface((self.inventory.INV_SIZE_X * (InventoryUI.BUTTON_SIZE + InventoryUI.PADDING) + InventoryUI.PADDING,
 			self.inventory.INV_SIZE_Y * (InventoryUI.BUTTON_SIZE + InventoryUI.PADDING) + InventoryUI.PADDING))
-		self.surface.fill((100,100,100,100))
+		self.surface.fill((100,100,100,255))
 
 	def getGUIPosFromItemPos(self, pos):
 		newX = (pos[0] * (InventoryUI.BUTTON_SIZE + InventoryUI.PADDING)) + InventoryUI.PADDING

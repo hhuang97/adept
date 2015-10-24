@@ -18,8 +18,8 @@ location / size of the requested chunks.
 
 class MapGenerator:
 
-    chunkSizeX = 64
-    chunkSizeY = 64
+    chunkSizeX = 32
+    chunkSizeY = 32
 
     @staticmethod
     def GenerateMap(seed, startx, starty, sizex, sizey):
@@ -31,13 +31,9 @@ class MapGenerator:
         of detail produced in the noise maps.
         """
 
-        #Generate map seed if none was given
-        if seed == None:
-            seed = random.random()
-
         #Generate 2d Lists for height and moisture data
-        heightMap = [[None]*sizex for _ in range(sizey)]
-        moistureMap = [[None]*sizex for _ in range(sizey)]
+        heightMap = [[None]*sizex for g in range(sizey)]
+        moistureMap = [[None]*sizex for h in range(sizey)]
 
         for outputy, y in enumerate(range(starty, sizey + starty)):
             for outputx, x in enumerate(range(startx, sizex + startx)):
@@ -51,36 +47,36 @@ class MapGenerator:
 
     @staticmethod
     def AssignBiomes(altitude,moisture,sizex,sizey):
-        biomeMap = [[None]*sizex for _ in range(sizey)]
-        for y in range(sizex):
-            for x in range(sizey):
+        biomeMap = [[None]*sizex for g in range(sizey)]
+        for y in range(0,sizex):
+            for x in range(0,sizey):
                 #ocean
                 if(altitude[x][y] <= Biome.ocean_height):
-                    biomeMap[x][y] = Biome.ocean
+                    biomeMap[y][x] = Biome.ocean
                 #shore
                 elif(altitude[x][y] <= Biome.shore_height):
-                    biomeMap[x][y] = Biome.shore
+                    biomeMap[y][x] = Biome.shore
                 #Mountain Peak
                 elif(altitude[x][y] >= Biome.peak_height):
-                    biomeMap[x][y] = Biome.peak
+                    biomeMap[y][x] = Biome.peak
                 #Mountain
                 elif(altitude[x][y] >= Biome.mountain_height):
-                    biomeMap[x][y] = Biome.mountain
+                    biomeMap[y][x] = Biome.mountain
                 #tundra
                 elif(moisture[x][y] >= Biome.tundra_moisture):
-                    biomeMap[x][y] = Biome.tundra
+                    biomeMap[y][x] = Biome.tundra
                 #tropical
                 elif(moisture[x][y] >= Biome.tropical_moisture):
-                    biomeMap[x][y] = Biome.tropical
+                    biomeMap[y][x] = Biome.tropical
                 #Forest
                 elif(moisture[x][y] >= Biome.forest_moisture):
-                    biomeMap[x][y] = Biome.forest
+                    biomeMap[y][x] = Biome.forest
                 #Grassland
                 elif(moisture[x][y] >= Biome.grassland_moisture):
-                    biomeMap[x][y] = Biome.grassland
+                    biomeMap[y][x] = Biome.grassland
                 #desert
                 elif(moisture[x][y] >= Biome.desert_moisture):
-                    biomeMap[x][y] = Biome.desert
+                    biomeMap[y][x] = Biome.desert
 
         return biomeMap
 
@@ -93,9 +89,9 @@ class MapGenerator:
 
     @staticmethod
     def GenerateChunk(seed,chunkx, chunky):
-        worldx = chunkx * 64
-        worldy = chunky * 64
-        return MapGenerator.GenerateMap(seed, worldx, worldy, MapGenerator.chunkSizeX, MapGenerator.chunkSizeY)
+        worldx = chunkx * MapGenerator.chunkSizeX
+        worldy = chunky * MapGenerator.chunkSizeY
+        return MapGenerator.GenerateMap(seed, worldx, worldy, MapGenerator.chunkSizeX, MapGenerator.chunkSizeX)
 
     @staticmethod
     def DrawMap(biomeMap):
@@ -135,6 +131,10 @@ class MapGenerator:
                 else:
                     pixels[x,y] = 0x000000
                     #Biome not assigned
+                if x % 32 == 0 or y % 32 == 0:
+                    pixels[x,y] = 0xeeeeee
+                if x == 0 and y == 0:
+                    pixels[x,y] = 0xff0000
 
         img.show()
-#MapGenerator.GenerateMap(random.random(),0,0,16*MapGenerator.chunkSizeX,16*MapGenerator.chunkSizeY)
+#MapGenerator.DrawMap(MapGenerator.GenerateMap(0,-32,-32,128,128))

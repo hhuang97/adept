@@ -9,6 +9,8 @@ from buffalo.button import Button
 from buffalo.option import Option
 
 from saves import Saves
+from playerCharacter import PlayerCharacter
+from inventory import Inventory
 
 class Menu(Scene):
 
@@ -104,6 +106,8 @@ class Menu(Scene):
         for character in os.listdir("characters"):
             if character != ".DS_Store":
                 characters.append(character)
+        if not characters:
+            return ["No Characters"]
         return characters
 
 
@@ -116,8 +120,11 @@ class Menu(Scene):
             Options()
         )
     def go_to_gameTestScene(self):
+        pc_name = self.characterOption.label.text
         utils.set_scene(
-            GameTestScene(self.characterOption.label.text)
+            GameTestScene(
+                pc_name
+            )
         )
 
 from createCharacter import CreateCharacter

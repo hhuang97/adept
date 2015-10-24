@@ -3,6 +3,7 @@ import os.path
 import pygame
 
 from buffalo import utils
+from buffalo.label import Label
 
 """
 A Chunk is a data structure
@@ -42,13 +43,22 @@ class Chunk:
                 break
         self.pos = x,y
         self.defs = dict()
-        self.data = [["" for x in range(Chunk.CHUNK_WIDTH)] for y in range(Chunk.CHUNK_HEIGHT)]
+        self.data = [["" for _x in range(Chunk.CHUNK_WIDTH)] for _y in range(Chunk.CHUNK_HEIGHT)]
         self.surface = utils.empty_surface(
             (Chunk.TILE_SIZE * Chunk.CHUNK_WIDTH, Chunk.TILE_SIZE * Chunk.CHUNK_HEIGHT)
         )
+        if self.path is None:
+            self.data = MapGenerator.GenerateChunk(0, self.pos[0], self.pos[1])
+            self.defs = Biome.GenerateBiomeDefs()
+            self.toFile()
         self.fromFile(x,y)
+        self.label = Label(
+            (5,5),
+            str((self.pos[0] * 32, self.pos[1] * 32)),
+            font="default36",
+            color=(0,0,0,255)
+        )
         self.render()
-        self.seed = 1
 
     def generateDataAndDefs(self):
         x,y = self.pos
@@ -103,6 +113,8 @@ class Chunk:
                                 self.data[row][col] = key
 
                         row += 1 # And remember to keep track of the row!
+        #print str(self.pos)
+        #print self.data
 
     def render(self):
         for y, row in enumerate(self.data):
@@ -115,6 +127,7 @@ class Chunk:
                             (Chunk.TILE_SIZE, Chunk.TILE_SIZE),
                         )
                     )
+        #self.label.blit(self.surface)
 
     def blit(self, dest, pos):
         dest.blit( self.surface, pos )

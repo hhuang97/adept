@@ -2,6 +2,10 @@ from buffalo import utils
 from inventoryUI import InventoryUI
 import pygame
 
+"""
+Class to manage the in-game GUI. (i.e. Inventory and Crafting)
+"""
+
 class GUIManager:
 	def __init__(self):
 		self.active = False;
@@ -12,12 +16,18 @@ class GUIManager:
 		self.draggedItem = None
 
 	def updateGUIs(self):
+		"""
+		Calls update on all the registered GUIs
+		"""
 		self.surface = utils.empty_surface((utils.SCREEN_W, utils.SCREEN_H))
 		for UIObject in self.guiScreens:
 			UIObject.update()
 			self.surface.blit(UIObject.surface, UIObject.pos)
 
 	def findCollidingGUI(self, pos):
+		"""
+		Given a position (such as a mouse click) find the GUI screen that the position interacts with.
+		"""
 		for UIObject in self.guiScreens:
 			guiPos = UIObject.pos
 			guiRect = pygame.Rect(guiPos, (UIObject.surface.get_size()))
@@ -29,6 +39,7 @@ class GUIManager:
 		#Keyboard Events
 		keys = pygame.key.get_pressed()
 		if keys[pygame.K_e]:
+			self.updateGUIs()
 			#On Keydown
 			if not self.keydown:
 				self.active = not self.active
@@ -40,6 +51,7 @@ class GUIManager:
 		if not self.active:
 			return
 		if pygame.mouse.get_pressed()[0]:
+			self.updateGUIs()
 			#On Mousedown
 			if not self.mousedown:
 				self.mousedown = True
@@ -57,7 +69,6 @@ class GUIManager:
 
 	def blit(self, dest, pos):
 		if(self.active):
-			self.updateGUIs()
 			dest.blit(self.surface, pos)
 			if self.draggedItem != None:
 				newPos = (pygame.mouse.get_pos()[0] - InventoryUI.BUTTON_SIZE / 2, 
