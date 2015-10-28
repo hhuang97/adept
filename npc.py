@@ -116,7 +116,7 @@ class NPC(Character, QuadTree):
         self.surface.fill((0, 0, 0, 0))
         self.surface.blit(self.sprite, (0, 0))
         
-    def detectCollisions(self, characterList):
+    def detectCollision(self, characterList):
         self.npcList = characterList
         for npc in self.npcList:
             if npc.intersect_circle(self, 3) == self.intersect_circle(self, 3):
