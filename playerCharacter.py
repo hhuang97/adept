@@ -12,6 +12,7 @@ from chunk import Chunk
 
 from inventory import Inventory
 from skill import Skill
+from subMap import SubMap
 
 class PlayerCharacter(Character):
 
@@ -26,7 +27,7 @@ class PlayerCharacter(Character):
     DEFAULT_SPRITE_URL = os.path.join("sprites", "paul_asl",)
 
     #**kwargs here allows for an object to be created with a dictionary for input, which basically allows an object to be created from the deserialize method
-    def __init__(self, inventory, name=None, fPos=None, size=None, speed=None, **kwargs):
+    def __init__(self, inventory, name=None, fPos=None, zLevel=0, size=None, speed=None, **kwargs):
         name = name if name is not None else PlayerCharacter.DEFAULT_NAME #These could probably be rewritten with kwargs
         fPos = fPos if fPos is not None else PlayerCharacter.DEFAULT_FPOS
         size = size if size is not None else PlayerCharacter.DEFAULT_SIZE
@@ -57,8 +58,9 @@ class PlayerCharacter(Character):
         self.moving_left = False
         self.idle = False
         self.animation_delta = int((1.0 / self.speed) * 10.5)
+        self.zLevel = zLevel
 
-    def update(self, keys):
+    def update(self, keys, submaps):
 
         w, a, s, d = (
             keys[pygame.K_w],
@@ -66,7 +68,9 @@ class PlayerCharacter(Character):
             keys[pygame.K_s],
             keys[pygame.K_d],
         )
-        
+
+
+
         if w:
             self.yv += -self.speed
         if s:
@@ -80,9 +84,39 @@ class PlayerCharacter(Character):
             self.xv /= 1.4142135 # / sqrt(2)
             self.yv /= 1.4142135 # / sqrt(2)
 
-        x, y = self.fPos
+        
+        
+        ##TODO: Make Collisions less "sticky"
+        for submap in submaps:
+            #Collision Logic
+            collideRect = pygame.Rect(submap.pos[0],submap.pos[1],submap.size[0]*SubMap.TILE_SIZE, submap.size[1]*SubMap.TILE_SIZE)
+            pcRect = pygame.Rect((self.fPos[0]+6, self.fPos[1]), (self.surface.get_size()[0]-6,self.surface.get_size()[0])) #Manually using only the x component of self.surface necessary b/c for some reason the sprite has size (32,64) 
+            #pcRect = self.surface.get_bounding_rect().move(self.fPos)  
+            if collideRect.colliderect(pcRect):
+                submap.handleCollision(submap.getTileAtCoord(pcRect.center),self) 
+                newRect = pcRect.move(( self.xv * utils.delta, self.yv * utils.delta )) 
+                for tile in submap.tileMap:
+                    if tile.collisionEnabled and tile.pos[2] == self.zLevel:
+                        tileRect = pygame.Rect( submap.pos[0] + tile.pos[0] * SubMap.TILE_SIZE, submap.pos[1] + tile.pos[1] * SubMap.TILE_SIZE, SubMap.TILE_SIZE, SubMap.TILE_SIZE )
+                        if tileRect.colliderect(newRect):
+                            #Collision Detected between player and rect
+                            if tile.onCollision(pc=self) is not None:
+                                submap.render(self.zLevel)
+                            #X-Velocity Logic
+                            if pcRect.center[0] < tileRect.midleft[0] and self.xv > 0:
+                                self.xv = 0
+                            elif pcRect.center[0] > tileRect.midright[0] and self.xv < 0:
+                                self.xv = 0
+                            #Y-Velocity Logic
+                            if pcRect.center[1]  < tileRect.midbottom[1] and self.yv > 0:
+                                self.yv = 0
+                            elif pcRect.center[1] > tileRect.midtop[1] and self.yv < 0:
+                                self.yv = 0
+                                
+        x,y = self.fPos
         x += self.xv * utils.delta
-        y += self.yv * utils.delta
+        y += self.yv * utils.delta                   
+
         self.fPos = x, y
         self.pos  = int(self.fPos[0]), int(self.fPos[1])
         self.xv, self.yv = 0.0, 0.0

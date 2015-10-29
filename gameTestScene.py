@@ -14,7 +14,10 @@ from inventoryUI import InventoryUI
 from inventory import Inventory
 from guiManager import GUIManager
 from craftingUI import CraftingUI
+from hotbarUI import HotbarUI
+from subMap import SubMap
 from tradingUI import TradingUI
+from stair import Stair
 
 from playerCharacter import PlayerCharacter
 from friendly import Friendly
@@ -32,12 +35,53 @@ class GameTestScene(Scene):
         self.trader = Trader(name="merchant", fPos=(0.0,0.0)) # Example trader
         self.npcs = [self.enemy, self.friendly, self.trader]
         self.pc = Saves.unstore(pc_name, "characters")
-        self.npcs.detectCollision()
+        self.npcs.detectCollision() # may not need this because integrated with enemy and friendly separately
         Camera.lock(self.pc)
         self.UIManager = GUIManager()
         self.UIManager.guiScreens.append(InventoryUI(self.pc.inventory, self.UIManager))
         self.UIManager.guiScreens.append(CraftingUI(self.pc.inventory))
+        hb = HotbarUI(self.pc.inventory, self.UIManager)
+        self.UIManager.guiScreens.append(hb)
+        self.UIManager.alwaysOnGUIs.append(hb)
         self.UIManager.updateGUIs()
+
+        s = SubMap(10,10,5)
+        from tile import Tile 
+        t = Tile((5,9,0),2,collisionEnabled=False,buildingInternal=True,roofType=2)
+        for x in range(10):
+            for y in range(10):
+                newTile = Tile(pos=(x,y,0),type_id=0,collisionEnabled=False,buildingInternal=True,roofType=1)
+                if x == 0 or x == 9 or y == 0 or y == 9:
+                    newTile.buildingInternal = False
+                    newTile.type_id = 1
+                    newTile.collisionEnabled = True
+                s.addTile(newTile)
+        for x in range(10):
+            for y in range(10):
+                newTile = Tile(pos=(x,y,1),type_id=5,collisionEnabled=False,buildingInternal=True,roofType=1)
+                if x == 0 or x == 9 or y == 0 or y == 9:
+                    newTile.buildingInternal = False
+                    newTile.type_id = 1
+                    newTile.collisionEnabled = True
+                s.addTile(newTile)
+        s.addTile(t)
+        stair = Stair()
+        stair.pos = (1,2,0)
+        stair.collisionEnabled=True
+        stair.buildingInternal=True
+        stair.roofType=1
+        stair.type_id = 4
+        stair2 = Stair()
+        stair2.pos = (4,2,1)
+        stair2.collisionEnabled=True
+        stair2.buildingInternal=True
+        stair2.roofType=1
+        stair2.type_id = 4
+        stair2.isUp = False
+        s.addTile(stair2)
+        s.addTile(stair)
+        s.toFile()
+        MapManager.activeMap.submaps.append(s)
 
     def on_escape(self):
         Saves.store(self.pc)
@@ -45,7 +89,8 @@ class GameTestScene(Scene):
 
     def update(self):
         keys = pygame.key.get_pressed()
-        self.pc.update(keys)
+        subMaps = MapManager.activeMap.submaps
+        self.pc.update(keys, subMaps)
         for npc in self.npcs:
             if npc.__class__.__name__ is "Enemy":
                 npc.update(self.pc.fPos)
@@ -58,7 +103,7 @@ class GameTestScene(Scene):
 
     def blit(self):
         Camera.blitView()
-        self.UIManager.blit(utils.screen, (0,0))
-        self.pc.blit(utils.screen)
         for npc in self.npcs:
             npc.blit(utils.screen)
+        self.pc.blit(utils.screen)
+        self.UIManager.blit(utils.screen, (0,0))

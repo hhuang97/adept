@@ -19,6 +19,8 @@ class Chunk:
     TILE_SIZE                 = 32     # TILE_SIZE represents the tile size, in pixels, when
                                        # Camera.zoom = 1.0
 
+    LOADED_SURFACES = dict()
+
     def __init__(self, x, y):
         """
         This is the Chunk constructor.
@@ -59,6 +61,23 @@ class Chunk:
             color=(0,0,0,255)
         )
         self.render()
+
+    @staticmethod
+    def loadSurfaceForId(_id):
+        if _id in Chunk.LOADED_SURFACES.keys():
+            return Chunk.LOADED_SURFACES[_id]
+        IMG_FILE = os.path.join(os.path.join(*list(['assets','terrain'] + [str(_id) + ".png"])))
+        try:
+            surface = pygame.image.load(IMG_FILE)
+            Chunk.LOADED_SURFACES[_id] = surface
+            return surface
+        except Exception as e:
+            print("Error: Chunk texture for item \"" + str(_id) + "\" does not exist.")
+            print(e)
+            IMG_FILE = os.path.join(os.path.join(*list(['assets'] + ["error.png"])))
+            surface = pygame.image.load(IMG_FILE)
+            Chunk.LOADED_SURFACES[_id] = surface
+            return surface
 
     def generateDataAndDefs(self):
         x,y = self.pos
@@ -120,13 +139,20 @@ class Chunk:
         for y, row in enumerate(self.data):
             for x, col in enumerate(row):
                 if col in self.defs.keys():
-                    self.surface.fill(
-                        self.defs[col],
-                        pygame.Rect(
-                            (x * Chunk.TILE_SIZE, y * Chunk.TILE_SIZE),
-                            (Chunk.TILE_SIZE, Chunk.TILE_SIZE),
-                        )
+                    #Image/Texture Based Rendering
+                    self.surface.blit(
+                        Chunk.loadSurfaceForId(col),
+                        (x * Chunk.TILE_SIZE, y * Chunk.TILE_SIZE)
                     )
+
+                    #Color Based Rendering
+                    # self.surface.fill(
+                    #     self.defs[col],
+                    #     pygame.Rect(
+                    #         (x * Chunk.TILE_SIZE, y * Chunk.TILE_SIZE),
+                    #         (Chunk.TILE_SIZE, Chunk.TILE_SIZE),
+                    #     )
+                    # )
         #self.label.blit(self.surface)
 
     def blit(self, dest, pos):

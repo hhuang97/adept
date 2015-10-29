@@ -54,7 +54,7 @@ class CraftingUI:
             itemSurface = pygame.Surface.copy(Item(item, quantity=recipe.components[item]).surface)
             #Shade items red if they aren't available for recipe
             if self.inventory.getTotalItemQuantity(item) < recipe.components[item]:
-                #itemSurface.fill((0, 0, 0, 255), None, pygame.BLEND_RGBA_MULT)
+                itemSurface.fill((0, 0, 0, 255), None, pygame.BLEND_RGBA_MULT)
                 itemSurface.fill(pygame.Color(255,0,0,250)[0:3] + (0,), None, pygame.BLEND_RGBA_ADD)
             newScreen.blit(itemSurface, (x,y))
         """
@@ -67,7 +67,7 @@ class CraftingUI:
         """
         Arrow Rendering
         """
-        path = os.path.join(os.path.join(*list(Item.BASE_PATH +  ['assets'] + ["arrow.png"])))
+        path = os.path.join(os.path.join(*list(['assets'] + ['items'] + ["arrow.png"])))
         arrowSurface = pygame.image.load(path)
         newScreen.blit(arrowSurface,(114, (newScreen.get_height() / 2) - arrowSurface.get_height() / 2))
         """

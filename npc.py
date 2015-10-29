@@ -119,10 +119,15 @@ class NPC(Character, QuadTree):
     def detectCollision(self, characterList):
         self.npcList = characterList
         for npc in self.npcList:
+            if npc.intersect_rect(self, 4, 5) == self.intersect_rect(self, 4, 5):
+                self.collisionList+=npc
             if npc.intersect_circle(self, 3) == self.intersect_circle(self, 3):
-                if self.direction == "l" | self.direction == "r":
-                    #if about to collide left or right, change one NPC direction to go up
-                    self.direction = "u"
-                elif self.direction == "u" | self.direction == "d":
-                    #if about to collide up or down, change one NPC direction to go right
-                    self.direction = "r"
+                self.collisionList+=npc
+        self.collisionList = self.collisionList.merge()
+        for c in self.collisionList:
+            if c.direction == "l" | c.direction == "r":
+                #if about to collide left or right, change one NPC direction to go up
+                c.direction = "u"
+            elif c.direction == "u" | c.direction == "d":
+                #if about to collide up or down, change one NPC direction to go right
+                c.direction = "r"

@@ -66,7 +66,8 @@ class QuadTree(object):
             self.eList = self.eList_rect
         
         def merge(self, eList_rect, eList_circle):
-            """
-            TODO: merge points from eList_rect and eList_circle, take out repeats
-            """
-            pass
+            # merges two lists and removes duplicates
+            in_rectList = set(self.eList_rect)
+            in_circList = set(self.eList_circle)
+            unique = in_rectList - in_circList
+            self.eList = in_circList + list(unique)

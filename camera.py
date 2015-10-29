@@ -64,6 +64,7 @@ class Camera:
 
     @staticmethod
     def blitView():
+        #Blits chunks
         rmult = Chunk.TILE_SIZE * Chunk.CHUNK_HEIGHT
         cmult = Chunk.TILE_SIZE * Chunk.CHUNK_WIDTH
         for rowindx, row in enumerate(MapManager.loadedChunks):
@@ -74,5 +75,7 @@ class Camera:
                     utils.screen,
                     (cmult * x - Camera.pos[0], rmult * y - Camera.pos[1])
                 )
-                #print Camera.pos 
-                #print (cmult * x - Camera.pos[0], rmult * y - Camera.pos[1])
+        
+        #Blits submaps
+        for submap in MapManager.activeMap.submaps:
+            submap.blit(utils.screen, (submap.pos[0] - Camera.pos[0], submap.pos[1] - Camera.pos[1]))

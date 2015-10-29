@@ -10,7 +10,9 @@ class GUIManager:
 	def __init__(self):
 		self.active = False;
 		self.surface = utils.empty_surface((utils.SCREEN_W, utils.SCREEN_H))
+		self.alwaysOnSurface = utils.empty_surface((utils.SCREEN_W, utils.SCREEN_H))
 		self.guiScreens = list()
+		self.alwaysOnGUIs = list()
 		self.keydown = False;
 		self.mousedown = False;
 		self.draggedItem = None
@@ -20,9 +22,13 @@ class GUIManager:
 		Calls update on all the registered GUIs
 		"""
 		self.surface = utils.empty_surface((utils.SCREEN_W, utils.SCREEN_H))
+		self.alwaysOnSurface = utils.empty_surface((utils.SCREEN_W, utils.SCREEN_H))
 		for UIObject in self.guiScreens:
 			UIObject.update()
 			self.surface.blit(UIObject.surface, UIObject.pos)
+		for UIObject in self.alwaysOnGUIs:
+			UIObject.update()
+			self.alwaysOnSurface.blit(UIObject.surface, UIObject.pos)
 
 	def findCollidingGUI(self, pos):
 		"""
@@ -47,9 +53,20 @@ class GUIManager:
 		else:
 			self.keydown = False
 
-		#Mouse Events
-		if not self.active:
+
+		if self.active:
+			for gui in self.guiScreens:
+				if hasattr(gui, "handleKeyboardPress"):
+					if gui.handleKeyboardPress(keys) is not None:
+						self.updateGUIs()
+		else:
+			for gui in self.alwaysOnGUIs:
+				if hasattr(gui, "handleKeyboardPress"):
+					if gui.handleKeyboardPress(keys) is not None:
+						self.updateGUIs()
 			return
+
+		#Mouse Events
 		if pygame.mouse.get_pressed()[0]:
 			self.updateGUIs()
 			#On Mousedown
@@ -70,7 +87,9 @@ class GUIManager:
 	def blit(self, dest, pos):
 		if(self.active):
 			dest.blit(self.surface, pos)
-			if self.draggedItem != None:
-				newPos = (pygame.mouse.get_pos()[0] - InventoryUI.BUTTON_SIZE / 2, 
-					pygame.mouse.get_pos()[1] - InventoryUI.BUTTON_SIZE / 2)
-				dest.blit(self.draggedItem.surface, newPos)
+		else:
+			dest.blit(self.alwaysOnSurface, pos)
+		if self.draggedItem != None:
+			newPos = (pygame.mouse.get_pos()[0] - InventoryUI.BUTTON_SIZE / 2, 
+				pygame.mouse.get_pos()[1] - InventoryUI.BUTTON_SIZE / 2)
+			dest.blit(self.draggedItem.surface, newPos)

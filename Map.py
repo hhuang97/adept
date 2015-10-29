@@ -10,6 +10,7 @@ class Map:
         self.path = os.path.join(*self.pathlist)
         self.precedence = 0
         self.seed = 0
+        self.submaps = list()
         path = os.path.join(*list(self.pathlist + ["properties.txt"]))
         if not os.path.isfile(path):
             print ("[Map] Error: No properties.txt found at \"" + path + "\". Creating an empty one.")
@@ -32,6 +33,7 @@ class Map:
                         except:
                             pass
         self.loadChunkFiles()
+        self.loadSubMaps()
 
     def loadChunkFiles(self):
         LOAD_PATH = self.pathlist + ["chunks"]
@@ -41,25 +43,12 @@ class Map:
         files = [f for f in os.listdir(os.path.join(*LOAD_PATH)) if os.path.isfile(os.path.join(*list(LOAD_PATH + [f])))]
         self.chunk_files = [os.path.join(*list(LOAD_PATH + [f])) for f in files if len(f) >= 9 and f[-6:] == ".chunk"]
 
-#    def isChunkLoaded(self, x, y):
-#        for chunkFile in self.chunk_files:
-#            parsedName = re.split(r'\s+|[,.]\s*', chunkFile)
-#            if parsedName[0] == str(x) and parsedName [1] == str(y):
-#                return True
-#        return False
+    def loadSubMaps(self):
+        LOAD_PATH = self.pathlist + ["submaps"]
+        if not os.path.exists(os.path.join(*LOAD_PATH)):
+            print("[Map] Error: No submaps folder found. Creating an empty one.")
+            os.makedirs(os.path.join(*LOAD_PATH))
+        files = [f for f in os.listdir(os.path.join(*LOAD_PATH)) if os.path.isfile(os.path.join(*list(LOAD_PATH + [f])))]
+        self.chunk_files = [os.path.join(*list(LOAD_PATH + [f])) for f in files if f.endswith(".smap")]
 
-#    def loadChunk(self, chunkx, chunky):
-#        #Search loaded chunks to see if the desired chunk already exists
-#        for chunkFile in self.chunk_files:
-#            parsedName = re.split(r'\s+|[,.]\s*', chunkFile)
-#            if parsedName[0] == str(chunkx) and parsedName [1] == str(chunky):
-#                loadedChunk = Chunk(chunkx, chunky)
-#                loadedChunk.path = chunkFile
-#                loadedChunk.fromFile(chunkx, chunky)
-#                return loadedChunk
-#        #If the desired chunk does not exist, tell Chunk to create one
-#        genChunk = Chunk(chunkx, chunky)
-#        genChunk.generateDataAndDefs()
-#        genChunk.toFile()
-#        self.loadChunks()
-#        return Chunk(chunkx,chunky)
+

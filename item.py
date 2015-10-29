@@ -15,7 +15,7 @@ class Item():
         self.name = name
         info = dict() # yaml files messed up json serialization, works as long as it's not a self. variable
 
-        ITEM_FILE = os.path.join(os.path.join(*list(Item.BASE_PATH + [self.name + ".yml"])))
+        ITEM_FILE = os.path.join(os.path.join(*list(['items'] + [self.name + ".yml"])))
         try:
             with open(ITEM_FILE, "r") as iFile:
                 info = yaml.load(iFile.read())
@@ -58,13 +58,13 @@ class Item():
     def resetSurface(self):
         self.surface = utils.empty_surface((InventoryUI.BUTTON_SIZE, InventoryUI.BUTTON_SIZE))
         #Load item image to surface
-        IMG_FILE = os.path.join(os.path.join(*list(Item.BASE_PATH +  ['assets'] + [self.name + ".png"])))
+        IMG_FILE = os.path.join(os.path.join(*list(['assets','items'] + [self.name + ".png"])))
         try:
             self.surface = pygame.image.load(IMG_FILE)
         except Exception as e:
             print("Error: Icon for item \"" + str(self.name) + "\" does not exist.")
             print(e)
-            IMG_FILE = os.path.join(os.path.join(*list(Item.BASE_PATH +  ['assets'] + ["error.png"])))
+            IMG_FILE = os.path.join(os.path.join(*list(['assets'] + ["error.png"])))
             self.surface = pygame.image.load(IMG_FILE)
 
     def renderItemQuantity(self):
