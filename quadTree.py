@@ -145,4 +145,81 @@ class QuadTree(object):
                 b.update()
         else:
             self.findCollision(self.entityList)
-            
+    
+    
+    """
+    Below methods are used for path finding using A* algorithm
+    https://en.wikipedia.org/wiki/A*_search_algorithm
+    """
+    
+    # wrapper method for A* search
+    def find_path(self, source, destination):
+        source = self.quadtree.cell_at(*source)
+        destination = self.quadtree.cell_at(*destination)
+        path = self.quadtree.a_star_search(source, destination) + [destination]
+        points = [source.center]
+        for i, cell in enumerate(path):
+            try:
+                next_path = path[i+1]
+            except IndexError:
+                points.append(cell.center)
+                break
+            if cell.top == next_path.bottom:
+                if cell.width < next_path.width:
+                    points.append(cell.midtop)
+                else:
+                    points.append(next_path.midbottom)
+            elif cell.bottom == next_path.top:
+                if cell.width < next_path.width:
+                    points.append(cell.midbottom)
+                else:
+                    points.append(next_path.midtop)
+            elif cell.right == next_path.left:
+                if cell.height < next_path.height:
+                    points.append(cell.midright)
+                else:
+                    points.append(next_path.midleft)
+            elif cell.left == next_path.right:
+                if cell.height < next_path.height:
+                    points.append(cell.midleft)
+                else:
+                    points.append(next_path.midright)
+        return points
+    
+    def a_star_search(self, start, end):
+        closed = set()
+        g_score = {start: 0}
+        h_score = {start: (start.center - end.center)}
+        f_score = {start: h_score[start]}
+        came_from = {}
+
+        def reconstruct_path(node):
+            if node in came_from:
+                return reconstruct_path(came_from[node]) + [node]
+            else:
+                return [node]
+        
+        while f_score:
+            l = [(v, k) for k, v in f_score.entities()]
+            l.sort()
+            x = l[0][1]
+            if x is end:
+                return reconstruct_path(came_from[end])
+            del f_score[x]
+            closed.add(x)
+            for y in x.neighbors():
+                if y in closed:
+                    continue
+                tentative_g_score = g_score[x] + (x.center - y.center)
+                if y not in f_score:
+                    tentative_is_better = True
+                elif tentative_g_score < g_score[y]:
+                    tentative_is_better = True
+                else:
+                    tentative_is_better = False
+                if tentative_is_better:
+                    came_from[y] = x
+                    g_score[y] = tentative_g_score
+                    h_score[y] = y.center - end.center
+                    f_score[y] = g_score[y] + h_score[y]
+        raise ValueError('cannot find path')
