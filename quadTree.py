@@ -2,43 +2,44 @@ from Entity import Entity
 import math
 
 class Node(object):
-        splitThreshold = 4 # maximum number of entities that can be in a leaf
+    splitThreshold = 4 # maximum number of entities that can be in a leaf
         
-        def __init__(self, entityList, min_x, max_x, min_y, max_y):
-            # bounds are inclusive
-            self.min_x = min_x
-            self.max_x = max_x
-            self.min_y = min_y
-            self.max_y = max_y
-            if len(entityList) > QuadTree.Node.splitThreshold:
-                self.isLeaf = False
-            else:
-                self.isLeaf = True
-                self.eList = [e for e in entityList if Entity.x <= self.max_x & Entity.x >= self.min_x
-                              & Entity.y >= self.min_x & Entity.y <= self.max_y]
+    def __init__(self, entityList, min_x, max_x, min_y, max_y):
+        # bounds are inclusive
+        self.min_x = min_x
+        self.max_x = max_x
+        self.min_y = min_y
+        self.max_y = max_y
+        if len(entityList) > QuadTree.Node.splitThreshold:
+            self.isLeaf = False
+        else:
+            self.isLeaf = True
+            self.eList = [e for e in entityList if Entity.x <= self.max_x & Entity.x >= self.min_x
+                          & Entity.y >= self.min_x & Entity.y <= self.max_y]
             
-        def subdivide(self):
-            # recursive call to subdivide until there are few enough entities in a leaf
-            center_x = (self.min_x + self.max_x) / 2
-            center_y = (self.min_y + self.max_y) / 2
-            self.NE = QuadTree.Node(self.eList, center_x+1, self.max_x, self.min_y, center_y)
-            self.NW = QuadTree.Node(self.eList, self.min_x, center_x, self.min_y, center_y)
-            self.SE = QuadTree.Node(self.eList, center_x+1, self.max_x, center_y+1, self.max_y)
-            self.SW = QuadTree.Node(self.eList, self.min_x, center_x, center_y+1, self.max_y)
-            branch = self.NE | self.NW | self.SE | self.SW
-            self.branches.append(branch)
+    def subdivide(self):
+        # recursive call to subdivide until there are few enough entities in a leaf
+        center_x = (self.min_x + self.max_x) / 2
+        center_y = (self.min_y + self.max_y) / 2
+        self.NE = Node(self.eList, center_x+1, self.max_x, self.min_y, center_y)
+        self.NW = Node(self.eList, self.min_x, center_x, self.min_y, center_y)
+        self.SE = Node(self.eList, center_x+1, self.max_x, center_y+1, self.max_y)
+        self.SW = Node(self.eList, self.min_x, center_x, center_y+1, self.max_y)
+        branch = self.NE | self.NW | self.SE | self.SW
+        self.branches.append(branch)
             
-        def contains(self, x, z):
-            x0, x1, z0, z1 = self.rect
-            if x >= x0 and x <= x1 and z >= z0 and z <= z1:
-                return True
-            return False
+    def contains(self, x, z):
+        x0, x1, z0, z1 = self.rect
+        if x >= x0 and x <= x1 and z >= z0 and z <= z1:
+            return True
+        return False
 
 class QuadTree(object):
-    
-    # (???) store parent node, grows as an entity moves farther away
-    # (WIP) when an entity moves, node redraws ONLY when the entity goes to the edge of a node
-    # (???) wrapper methods for public interface
+    """
+    TODO:
+    wrapper methods for public interface
+    go up far enough to include node with old and new positions (?)
+    """
     
     def __init__(self, parent):
         self.parent = parent
@@ -47,6 +48,7 @@ class QuadTree(object):
         
         
     def hit(self, entities, Entity):
+        # when an entity moves, node redraws only when the entity goes to the edge of a node
         self.entities = entities
         for e in self.entities:
             if e.intersect_rect(Entity, 16, 16):
@@ -97,7 +99,11 @@ class QuadTree(object):
                 self.eList_rect.remove(e)
         self.eList = self.eList_rect
         
-    def merge(self, eList_rect, eList_circle):
+    def merge(self):
+        QuadTree.merger(self.eList_rect, self.eList_circle)    
+    
+    
+    def merger(self, eList_rect, eList_circle):
         # merges entities obtained from two intersect methods and removes duplicates
         in_rectList = set(self.eList_rect)
         in_circList = set(self.eList_circle)
@@ -116,10 +122,10 @@ class QuadTree(object):
         for e in self.entList:
             self.entList.remove(e)
     
-    def find_nearest_neighbor(self):
+    def find_nearest_neighbor(self, Entity):
         n = 1
         for e in self.eList:
-            self.closestNeighbor = e.intersect_circle(e, n)
+            self.closestNeighbor = e.intersect_circle(Entity, n)
             if len(self.closestNeighbor == 0):
                 n+=1
             elif len(self.closestNeighbor) >= 1: # found closest neighbor(s)
@@ -130,11 +136,26 @@ class QuadTree(object):
     def get_rect(self):
         return self.rect
     
-    def add_entity(self, Entity):
-        self.entityList.append(Entity)
-    
     def redraw_nodes(self):
         Node.subdivide()
+    
+    def add_entity(self, Entity):
+        self.entityList.append(Entity)
+        
+    def remove_entity(self, Entity):
+        # remove entity and remove redundant nodes (delete empty nodes)
+        self.entityList.remove(Entity)
+        
+    def remove_entity_nodes(self, Entity):
+        QuadTree.remove_entity(self, Entity)
+        Node.subdivide()
+        
+    def transfer_entity(self, Entity, QuadTree):
+        # remove entity and add to another quadtree [WIP]
+        QuadTree.remove_entity_nodes(self, Entity)
+        q = QuadTree
+        q.__init__(q.parent)
+        q.add_entity(Entity)
     
     def update(self):
         # updates quadtree and recursively redraws nodes 
