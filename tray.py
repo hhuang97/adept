@@ -32,12 +32,14 @@ class Tray(object):
         self.surface = utils.empty_surface(self.size)
         self.surface.fill(self.color)
         for elem in self.elems:
+            if hasattr(elem, 'render'):
+                elem.render()
+                print "called"
             elem.blit(self.surface)
-        
     def update(self):
         rerender = False
         for elem in self.elems:
-            if elem.update():
+            if hasattr(elem, 'update') and elem.update():
                 rerender = True
 
     def move(self, diff):

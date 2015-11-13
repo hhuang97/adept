@@ -1,3 +1,5 @@
+import threading
+
 import pygame
 
 from buffalo import utils
@@ -13,8 +15,8 @@ def main():
 if __name__ == "__main__":
     
     if not utils.init(
-            caption='Adept',
-            fullscreen=True        
+            caption="Adept",
+            fullscreen=True       
     ):
         print('buffalo.utils failed to initialize')
         pygame.quit()

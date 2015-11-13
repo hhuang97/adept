@@ -9,7 +9,7 @@ class SubMap:
     PATH = ["submaps"]
     TILE_SIZE = 32
 
-    def __init__(self,sizeX,sizeY,_id,posX=0,posY=0,startingZ=0):
+    def __init__(self,_id,sizeX=0,sizeY=0,posX=0,posY=0,startingZ=0):
         self.size = sizeX,sizeY
         self.id = _id
         self.pos = posX,posY
@@ -37,10 +37,17 @@ class SubMap:
         if not os.path.isfile(url):
             print "Error: Tried to load SubMap with id \"" + str(self.id) + "\", but could not find the file."
             return
-
+        maxX = 0
+        maxY = 0
         with open(url,'r') as subMapFile:
             for tileLine in subMapFile:
-                self.tileMap.append(Tile.deserialize(tileLine))
+                t = Tile.deserialize(tileLine)
+                if t.pos[0] > maxX:
+                    maxX = t.pos[0]
+                if t.pos[1] > maxY:
+                    maxY = t.pos[1]
+                self.tileMap.append(t)
+        self.size = maxX+1,maxY+1
 
     #Best practice to make sure there aren't duplicate tile objects at same point in tileMap
     def addTile(self, tile):

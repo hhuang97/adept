@@ -137,4 +137,4 @@ class MapGenerator:
                     pixels[x,y] = 0xff0000
 
         img.show()
-#MapGenerator.DrawMap(MapGenerator.GenerateMap(0,-32,-32,128,128))
+#MapGenerator.DrawMap(MapGenerator.GenerateMap(random.random(),0,0,512,512))

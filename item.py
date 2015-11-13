@@ -4,21 +4,23 @@ import os
 import random
 import pygame
 from inventoryUI import InventoryUI
+from serializable import Serializable
 
-class Item():
+
+class Item(Serializable):
     BASE_PATH = ["items"]
 
-    def __init__(self,name,quantity=1,durability=1.0,**kwargs):
+    def __init__(self,name="",quantity=1,durability=1.0,**kwargs):
         """
         Static item information
         """
         self.name = name
-        info = dict() # yaml files messed up json serialization, works as long as it's not a self. variable
+        self.info = dict() # yaml files messed up json serialization, works as long as it's not a self. variable
 
         ITEM_FILE = os.path.join(os.path.join(*list(['items'] + [self.name + ".yml"])))
         try:
             with open(ITEM_FILE, "r") as iFile:
-                info = yaml.load(iFile.read())
+                self.info = yaml.load(iFile.read())
         except Exception as e:
             print("Error: Item \"" + name + "\" does not exist.")
             print(e)
@@ -76,7 +78,6 @@ class Item():
                 self.surface.blit(label, (12,18))
             else:
                 self.surface.blit(label, (18,18))
-
 
     def update(self):
         self.renderItemQuantity()

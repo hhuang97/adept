@@ -11,6 +11,6 @@ install:
     - cd ..
     - pip install -r .travis_requirements.txt
 script: 
-    - nosetests
+    - nosetests -v
 virtualenv:
     system_site_packages: true
