@@ -1,6 +1,6 @@
-from quadTree import QuadTree
 
-class Entity(object, QuadTree):
+
+class Entity(object):
     entityIDCounter = 0
     
     def __init__(self, x, y):
@@ -8,7 +8,7 @@ class Entity(object, QuadTree):
         Entity.entityIDCounter += 1
         self.x = x
         self.y = y
-        self.quadtree+=self
+        #self.quadtree+=self
     
     def move_X(self, move_x):
         self.x += move_x
@@ -27,12 +27,12 @@ class Entity(object, QuadTree):
     @x.setter
     def x(self, x):
         self._x = x
-        self.quadtree.update()
+        #self.quadtree.update()
         
     @y.setter
     def y(self, y):
         self._y = y
-        self.quadtree.update()
+        #self.quadtree.update()
     
     def __hash__(self):
         return hash(self.name)
