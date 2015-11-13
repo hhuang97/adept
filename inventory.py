@@ -1,12 +1,14 @@
 from item import Item
 import random
+from floatingText import FloatingText,FloatingTextManager
+from playerConsole import PlayerConsole
 
 class Inventory():
 
     def __init__(self, **kwargs):
 
         self.INV_SIZE_X = 10
-        self.INV_SIZE_Y = 4
+        self.INV_SIZE_Y = 3
 
         self.items = [[None]*self.INV_SIZE_Y for _ in range(self.INV_SIZE_X)]
         self.hotbar = [None]*self.INV_SIZE_X
@@ -17,8 +19,6 @@ class Inventory():
         self.items[1][0] = Item("book")
         self.items[1][0].quantity = 10
         self.items[2][0] = Item("test")
-        self.items[3][0] = Item("arrow") # for projectile testing
-        self.items[3][0].quantity = 5
         self.update()
 
     def addItem(self, item):
@@ -32,7 +32,8 @@ class Inventory():
                     self.items[x][y] = item
                     return
 
-    def addItemQuantity(self, item, quantity):
+
+    def addItemQuantity(self,item, quantity):
         pass
 
     def removeItem(self, item):
@@ -86,13 +87,10 @@ class Inventory():
 
     def placeItemInHotbar(self, item, pos):
         if isinstance(item,Item):
-            oldItem = self.hotbar[int(pos)]
-            self.hotbar[int(pos)] = item
-            return oldItem
-
-    def placeItemInHotbar(self, item, pos):
-        if isinstance(item,Item):
+            oldItem = self.hotbar[pos[0]]
             self.hotbar[pos[0]] = item
+            return oldItem
+        
 
     def getTotalItemQuantity(self, item):
         """
@@ -116,11 +114,7 @@ class Inventory():
             if hotbar[x] == None:
                 hotbar[x] = item
                 return
-<<<<<<< HEAD
-            
-=======
 
->>>>>>> 665f9fa45cb38e283843487a3985e5d1f0bfc1e8
     def update(self):
         for x in range(self.INV_SIZE_X):
             for y in range(self.INV_SIZE_Y):
@@ -134,3 +128,21 @@ class Inventory():
                 if self.hotbar[x] is not None:
                     self.hotbar[x].update()
 
+    def craftingNotification(self,recipe):
+        offsetY = 0
+        offsetPerNotification = 10
+
+        if self.playerCharacter() is None:
+            return
+        for item in recipe.products:
+            item = Item(item)
+            item.quantity = recipe.products[item.name]
+            FloatingTextManager.ACTIVE_FLOATING_TEXTS.append(FloatingText(
+                    "+" + str(item.quantity) + " " + item.name,
+                    (self.playerCharacter().fPos[0], self.playerCharacter().fPos[1] + offsetY),
+                    vert_speed = -1,
+                    hor_speed = -1,
+                    alpha_decay = 5,
+                    lifetime = 50))
+            offsetY += offsetPerNotification
+            PlayerConsole.registerNewEvent("You crafted " + str(item.quantity) + " " + item.name + "(s)!", (255,0,0,255))

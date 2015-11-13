@@ -8,14 +8,12 @@ from buffalo.label import Label
 from buffalo.button import Button
 from buffalo.option import Option
 
-from saves import Saves
-from playerCharacter import PlayerCharacter
 from inventory import Inventory
+from saves import Saves
 
 class Menu(Scene):
 
     def on_escape(self):
-        print(self.characterOption.label.text)
         exit()
 
     def update(self):
@@ -28,6 +26,8 @@ class Menu(Scene):
         Scene.__init__(self)
         self.BACKGROUND_COLOR = (177, 0, 50, 255)
         Button.DEFAULT_BG_COLOR = (100, 100, 100, 255)
+        Button.DEFAULT_FONT = "default18"
+        Option.DEFAULT_FONT = "default18"
         self.labels.add(
             Label(
                 (5, 5),
@@ -112,21 +112,20 @@ class Menu(Scene):
 
 
     def go_to_createCharacter(self):
+        from createCharacter import CreateCharacter
         utils.set_scene(
             CreateCharacter()
         )
     def go_to_options(self):
+        from options import Options
         utils.set_scene(
             Options()
         )
     def go_to_gameTestScene(self):
+        from gameTestScene import GameTestScene
         pc_name = self.characterOption.label.text
         utils.set_scene(
             GameTestScene(
                 pc_name
             )
         )
-
-from createCharacter import CreateCharacter
-from gameTestScene import GameTestScene
-from options import Options

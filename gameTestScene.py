@@ -18,6 +18,9 @@ from hotbarUI import HotbarUI
 from subMap import SubMap
 from tradingUI import TradingUI
 from stair import Stair
+from floatingText import FloatingText
+from floatingText import FloatingTextManager
+from playerConsole import PlayerConsole
 
 from playerCharacter import PlayerCharacter
 from friendly import Friendly
@@ -35,7 +38,6 @@ class GameTestScene(Scene):
         self.trader = Trader(name="merchant", fPos=(0.0,0.0)) # Example trader
         self.npcs = [self.enemy, self.friendly, self.trader]
         self.pc = Saves.unstore(pc_name, "characters")
-        self.npcs.detectCollision() # may not need this because integrated with enemy and friendly separately
         Camera.lock(self.pc)
         self.UIManager = GUIManager()
         self.UIManager.guiScreens.append(InventoryUI(self.pc.inventory, self.UIManager))
@@ -82,6 +84,8 @@ class GameTestScene(Scene):
         s.addTile(stair)
         s.toFile()
         MapManager.activeMap.submaps.append(s)
+        PlayerConsole.init()
+
 
     def on_escape(self):
         Saves.store(self.pc)
@@ -100,10 +104,14 @@ class GameTestScene(Scene):
                 npc.update(self.pc.inventory, self.UIManager)
         self.UIManager.update()
         Camera.update()
+        FloatingTextManager.update()
+        PlayerConsole.update()
 
     def blit(self):
         Camera.blitView()
         for npc in self.npcs:
             npc.blit(utils.screen)
         self.pc.blit(utils.screen)
+        FloatingTextManager.blit(utils.screen, (0,0))
         self.UIManager.blit(utils.screen, (0,0))
+        PlayerConsole.tray.blit(utils.screen)

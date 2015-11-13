@@ -15,7 +15,9 @@ class Saves: #Only partially implemembted- only works for PlayerCharacters
 	def store(obj): #Currently only works for player characters
 		serialization = obj.serialize()
 		if obj.__class__.__name__ == "PlayerCharacter":
-			with open(os.path.join("characters", obj.name), 'w') as f:
+			if not os.path.isdir("characters"):
+				os.makedirs("characters")
+			with open(os.path.join("characters", obj.name), 'w+') as f:
 				json.dump(serialization, f)
 		else:
 			pass #Needs to be implemented for saving the map and world state

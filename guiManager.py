@@ -1,6 +1,7 @@
 from buffalo import utils
 from inventoryUI import InventoryUI
 import pygame
+from playerConsole import PlayerConsole
 
 """
 Class to manage the in-game GUI. (i.e. Inventory and Crafting)
@@ -55,6 +56,7 @@ class GUIManager:
 
 
 		if self.active:
+			PlayerConsole.flashOn()
 			for gui in self.guiScreens:
 				if hasattr(gui, "handleKeyboardPress"):
 					if gui.handleKeyboardPress(keys) is not None:

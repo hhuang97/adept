@@ -1,5 +1,6 @@
 import os
 import os.path
+import weakref
 
 import pygame
 import pygame.image
@@ -40,6 +41,7 @@ class PlayerCharacter(Character):
         self.xv, self.yv = 0.0, 0.0
         self.surface = utils.empty_surface(self.size)
         self.inventory = inventory
+        self.inventory.playerCharacter = weakref.ref(self)
         self.sprites = {
             "i": list(), # idle
             "r": list(), # right
