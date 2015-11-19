@@ -1,5 +1,3 @@
-import multiprocessing
-
 import pygame
 
 from buffalo import utils

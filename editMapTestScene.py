@@ -1,10 +1,6 @@
 import os
 import os.path
 import sys
-from multiprocessing import Queue
-
-import numpy
-import numpy.random
 
 import pygame
 
@@ -64,8 +60,6 @@ class CameraController:
 
 class EditMapTestScene(Scene):
     def on_escape(self):
-        MapManager.soft_load_reader_queue = Queue()
-        MapManager.soft_load_reader_queue.put("DONE")
         sys.exit()
 
     def blit(self):

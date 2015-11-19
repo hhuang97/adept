@@ -1,13 +1,10 @@
 import os
-from multiprocessing import Process, Queue
+#from multiprocessing import Process, Queue
 from threading import Thread
+from Queue import Queue
 from entityManager import EntityManager
 
 from buffalo import utils
-
-
-
-global entityList
 
 class MapManager:
     """
@@ -25,7 +22,7 @@ class MapManager:
     lru_chunks    = dict()  # least recently used chunks
 
     @staticmethod
-    def loadMaps(entityList):
+    def loadMaps():
         """
         loadMaps loads all the maps that are checked in the plugins manager file
         """
@@ -36,7 +33,6 @@ class MapManager:
         # THIS LINE IS REALLY IMPORTANT
         MapManager.soft_load_reader_queue = Queue()
         MapManager.soft_load_writer_queue = Queue()
-        MapManager.soft_load_render_queue = Queue()
 
     @staticmethod
     def loadMap( map_name ):
@@ -62,33 +58,28 @@ class MapManager:
                 if (i, j) not in MapManager.loaded_chunks.keys():
                     MapManager.loaded_chunks[(i, j)] = Chunk(i, j)
                     MapManager.lru_chunks[(i, j)] = 2
-        if hasattr(MapManager, 'soft_load_reader_process'):
-            MapManager.soft_load_reader_process.join()
-        if hasattr(MapManager, 'soft_load_render_thread'):
-            MapManager.soft_load_render_thread.join()
-        MapManager.soft_load_reader_process = MapManager.get_soft_load_reader_process()
-        MapManager.soft_load_reader_process.start()
+        if hasattr(MapManager, 'soft_load_reader_thread'):
+            MapManager.soft_load_reader_thread.join()
+        MapManager.soft_load_reader_thread = MapManager.get_soft_load_reader_thread()
+        MapManager.soft_load_reader_thread.start()
         MapManager.soft_load_reader_queue.put(world_pos)
         MapManager.soft_load_reader_queue.put("DONE")
-#        MapManager.soft_load_render_thread = MapManager.get_soft_load_render_thread(world_pos)
-#        MapManager.soft_load_render_thread.start()
 
     @staticmethod
     def soft_load(world_pos):
         x, y = MapManager.get_chunk_coords(world_pos)
-        for j in range(y - 4, y + 5): # sides
-            for i in range(x - 4, x - 2) + range(x + 3, x + 5):
-                #MapManager.loaded_chunks[(i, j)] = Chunk(i, j)
+        for j in range(y - 3, y + 4): # sides
+            for i in range(x - 3, x - 2) + range(x + 3, x + 4):
                 EntityManager.__init__(entityList)
+                #MapManager.loaded_chunks[(i, j)] = Chunk(i, j)
                 if (i, j) not in MapManager.loaded_chunks:
-                    package = ((x, y), (i, j), Chunk(i, j, from_other_process=False))
+                    package = ((x, y), (i, j), Chunk(i, j, from_other_thread=False), 0) # zero means create surface,  means render
                     MapManager.soft_load_writer_queue.put(package)
-        for j in range(y - 4, y - 2) + range(y + 3, y + 5): # top and bottom
-            for i in range(x - 4, x + 5): 
-                EntityManager.__init__(entityList)
+        for j in range(y - 3, y - 2) + range(y + 3, y + 4): # top and bottom
+            for i in range(x - 3, x + 4): 
                 #MapManager.loaded_chunks[(i, j)] = Chunk(i, j)
                 if (i, j) not in MapManager.loaded_chunks:
-                    package = ((x, y), (i, j), Chunk(i, j, from_other_process=False))
+                    package = ((x, y), (i, j), Chunk(i, j, from_other_thread=False), 0) # zero means create surface,  means render
                     MapManager.soft_load_writer_queue.put(package)
 
     @staticmethod
@@ -116,39 +107,34 @@ class MapManager:
         if MapManager.soft_load_writer_queue.empty():
             return
         package = MapManager.soft_load_writer_queue.get()
-        coords, pos, chunk = package
-        chunk.create_and_render_surface()
-        #chunk.create_surface()
-        MapManager.loaded_chunks[pos] = chunk
-        if pos in MapManager.lru_chunks.keys():
-            MapManager.lru_chunks[pos] = 1
-        else:
-            MapManager.lru_chunks[pos] = 1
-        x, y = coords
-        for i, j in MapManager.loaded_chunks.keys():
-            if i < x - 4 or i > x + 4 or j < y - 4 or j > y + 4:
-                # these  are really far away chunks that can be offloaded if necessary
-                MapManager.lru_chunks[i, j] = 0
+        coords, pos, chunk, action = package
+        if action is 0:
+            chunk.create_surface()
+            MapManager.loaded_chunks[pos] = chunk
+
+            ##### LRU STUFF
+            if pos in MapManager.lru_chunks.keys():
+                MapManager.lru_chunks[pos] = 1
+            else:
+                MapManager.lru_chunks[pos] = 1
+            x, y = coords
+            for i, j in MapManager.loaded_chunks.keys():
+                if i < x - 3 or i > x + 3 or j < y - 3 or j > y + 3:
+                    # these  are really far away chunks that can be offloaded if necessary
+                    MapManager.lru_chunks[i, j] = 0
+            #### LRU STUFF
+
+            new_package = (None, pos, None, 1)
+            MapManager.soft_load_writer_queue.put(new_package)
+
+        elif action is 1:
+            MapManager.loaded_chunks[pos].render()
 
     @staticmethod
-    def soft_load_render(world_pos):
-        x, y = MapManager.get_chunk_coords(world_pos)
-        for j in range(y - 4, y - 2) + range(y + 3, y + 5):
-            for i in range(x - 4, x - 2) + range(x + 3, x + 5):
-                if (i, j) in MapManager.loaded_chunks.keys():
-                    MapManager.loaded_chunks[(i, j)].create_and_render_surface()
-        
-    @staticmethod
-    def get_soft_load_render_thread(world_pos):
-        soft_load_render_thread = Thread(target=MapManager.soft_load_render, args=((world_pos),))
-        soft_load_render_thread.daemon = True
-        return soft_load_render_thread
-
-    @staticmethod
-    def get_soft_load_reader_process():
-        soft_load_reader_process = Process(target=MapManager.soft_load_reader)
-        soft_load_reader_process.daemon = True
-        return soft_load_reader_process
+    def get_soft_load_reader_thread():
+        soft_load_reader_thread = Thread(target=MapManager.soft_load_reader)
+        soft_load_reader_thread.daemon = True
+        return soft_load_reader_thread
 
 from Map import Map
 from pluginManager import PluginManager
