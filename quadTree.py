@@ -1,7 +1,7 @@
 from Entity import Entity
 import math
 
-class Node(object, Entity):
+class Node(object):
     splitThreshold = 4 # maximum number of entities that can be in a leaf
         
     def __init__(self, entityList, min_x, max_x, min_y, max_y):
@@ -34,7 +34,7 @@ class Node(object, Entity):
             return True
         return False
 
-class QuadTree(object, Entity):
+class QuadTree(object):
     
     """
     TODO:
