@@ -1,7 +1,7 @@
 from Entity import Entity
 import math
 
-class Node(object):
+class Node(object, Entity):
     splitThreshold = 4 # maximum number of entities that can be in a leaf
         
     def __init__(self, entityList, min_x, max_x, min_y, max_y):
@@ -34,18 +34,17 @@ class Node(object):
             return True
         return False
 
-class QuadTree(object):
+class QuadTree(object, Entity):
+    
     """
     TODO:
-    wrapper methods for public interface
-    go up far enough to include node with old and new positions (?)
+    edit MapManager to instantiate a quadtree per chunk, then refine in the chunk by nodes
     """
     
     def __init__(self, parent):
         self.parent = parent
         self.children = [None,None,None,None]
         self.branches = []
-        
         
     def hit(self, entities, Entity):
         # when an entity moves, node redraws only when the entity goes to the edge of a node
@@ -99,9 +98,8 @@ class QuadTree(object):
                 self.eList_rect.remove(e)
         self.eList = self.eList_rect
         
-    def merge(self):
+    def merge(self): # wrapper
         QuadTree.merger(self.eList_rect, self.eList_circle)    
-    
     
     def merger(self, eList_rect, eList_circle):
         # merges entities obtained from two intersect methods and removes duplicates
@@ -132,6 +130,7 @@ class QuadTree(object):
                 break
             else: # random cases?
                 continue
+        return self.closestNeighbor
     
     def get_rect(self):
         return self.rect
@@ -148,7 +147,14 @@ class QuadTree(object):
         
     def remove_entity_nodes(self, Entity):
         QuadTree.remove_entity(self, Entity)
-        Node.subdivide()
+        for e in self.entities:
+            e.subdivide()
+            if e.intersect_circle(Entity, 32) == None:
+                e.remove_entity_nodes(Entity)
+            elif e.intersect_rect (Entity, 16, 16) == None:
+                e.remove_entity_nodes(Entity)
+            else:
+                continue
         
     def transfer_entity(self, Entity, QuadTree):
         # remove entity and add to another quadtree [WIP]
@@ -244,3 +250,5 @@ class QuadTree(object):
                     h_score[y] = y.center - end.center
                     f_score[y] = g_score[y] + h_score[y]
         raise ValueError('cannot find path')
+    
+    

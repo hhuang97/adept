@@ -42,3 +42,5 @@ class Entity(object):
     
     def get_rect(self):
         return self.rect
+    
+    

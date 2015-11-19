@@ -1,8 +1,13 @@
 import os
 from multiprocessing import Process, Queue
 from threading import Thread
+from entityManager import EntityManager
 
 from buffalo import utils
+
+
+
+global entityList
 
 class MapManager:
     """
@@ -20,7 +25,7 @@ class MapManager:
     lru_chunks    = dict()  # least recently used chunks
 
     @staticmethod
-    def loadMaps():
+    def loadMaps(entityList):
         """
         loadMaps loads all the maps that are checked in the plugins manager file
         """
@@ -53,6 +58,7 @@ class MapManager:
         x, y = MapManager.get_chunk_coords(world_pos)
         for j in range(y - 2, y + 3):
             for i in range(x - 2, x + 3):
+                EntityManager.__init__(entityList)
                 if (i, j) not in MapManager.loaded_chunks.keys():
                     MapManager.loaded_chunks[(i, j)] = Chunk(i, j)
                     MapManager.lru_chunks[(i, j)] = 2
@@ -73,11 +79,13 @@ class MapManager:
         for j in range(y - 4, y + 5): # sides
             for i in range(x - 4, x - 2) + range(x + 3, x + 5):
                 #MapManager.loaded_chunks[(i, j)] = Chunk(i, j)
+                EntityManager.__init__(entityList)
                 if (i, j) not in MapManager.loaded_chunks:
                     package = ((x, y), (i, j), Chunk(i, j, from_other_process=False))
                     MapManager.soft_load_writer_queue.put(package)
         for j in range(y - 4, y - 2) + range(y + 3, y + 5): # top and bottom
             for i in range(x - 4, x + 5): 
+                EntityManager.__init__(entityList)
                 #MapManager.loaded_chunks[(i, j)] = Chunk(i, j)
                 if (i, j) not in MapManager.loaded_chunks:
                     package = ((x, y), (i, j), Chunk(i, j, from_other_process=False))
