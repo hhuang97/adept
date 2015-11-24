@@ -14,6 +14,8 @@ from buffalo.option import Option
 from mapManager import MapManager
 from inventory import Inventory
 from saves import Saves
+from gameTestScene import GameTestScene
+
 
 class Menu(Scene):
 
@@ -100,25 +102,44 @@ class Menu(Scene):
                 func=exit,
             )
         )
-        self.characterOption = Option(
+        #Creates selection option if characters exist
+        if self.getNumCharacters() > 0:
+            self.characterOption = Option(
+                    (utils.SCREEN_W / 2, utils.SCREEN_H / 2 + 100),
+                    self.getCharacterNames(),
+                    x_centered=True,
+                    y_centered=True,
+                )
+            self.options.add(self.characterOption)
+        #
+        else:
+            self.labels.add(
+                Label(
                 (utils.SCREEN_W / 2, utils.SCREEN_H / 2 + 100),
-                self.getCharacterNames(),
+                "No Characters",
+                font=Option.DEFAULT_FONT,
                 x_centered=True,
                 y_centered=True,
+                )
             )
-        self.options.add(self.characterOption)
+        
 
     def getCharacterNames(self):
+        if not self.getCharacters():
+            return ["No Characters"]
+        return self.getCharacters()
+
+    def getCharacters(self):
         characters = list()
         if not os.path.isdir("characters"):
             os.mkdir("characters")
         for character in os.listdir("characters"):
             if character != ".DS_Store":
                 characters.append(character)
-        if not characters:
-            return ["No Characters"]
         return characters
 
+    def getNumCharacters(self):
+        return len(self.getCharacters())
 
     def go_to_createCharacter(self):
         from createCharacter import CreateCharacter
@@ -131,11 +152,10 @@ class Menu(Scene):
             Options()
         )
     def go_to_gameTestScene(self):
-        from gameTestScene import GameTestScene
-        pc_name = self.characterOption.label.text
-
-        if pc_name == "No Characters":
+        if self.getNumCharacters() == 0:
             return
+
+        pc_name = self.characterOption.label.text        
 
         MapManager.soft_load_reader_queue = Queue()
         MapManager.soft_load_reader_queue.put("DONE")
