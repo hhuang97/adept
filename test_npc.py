@@ -1,15 +1,15 @@
 from buffalo import utils
 from npc import NPC
-from enemy import Enemy
+#from enemy import Enemy
 from friendly import Friendly
 from trader import Trader
 
 utils.init()
 isWorking = False
-enemy = Enemy(name="monster", fPos=(600.0,600.0))
+#enemy = Enemy(name="monster", fPos=(600.0,600.0))
 friendly = Friendly(name="villager", fPos=(650.0,650.0))
 trader = Trader(name="merchant", fPos=(800.0,800.0))
-npcs = [enemy, friendly, trader]
+npcs = [friendly, trader]
 
 for npc in npcs:
     NPC.load_sprites()
@@ -21,3 +21,4 @@ for npc in npcs:
 NPC.update()    
 isWorking = True
 assert isWorking
+print True
