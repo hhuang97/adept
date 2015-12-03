@@ -3,8 +3,8 @@ from npc import NPC
 
 utils.init()
 isWorking = False
-A = NPC.__init__("a", 3, 10, 1)
-B = NPC.__init__("b", 2, 25, 3)
+A = NPC.__init__(NPC, 3, 10, 1)
+B = NPC.__init__(NPC, 2, 25, 3)
 npcs = [A, B]
 
 for npc in npcs:
@@ -12,6 +12,7 @@ for npc in npcs:
     A.move("d")
     B.move("r")
     NPC.detectCollision(npcs)
+    NPC.blit_sprite()
     
 NPC.update()    
 isWorking = True
