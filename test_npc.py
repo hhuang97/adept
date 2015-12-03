@@ -1,15 +1,15 @@
 from buffalo import utils
 from npc import NPC
-#from enemy import Enemy
-from friendly import Friendly
-from trader import Trader
+# from enemy import Enemy
+# from friendly import Friendly
+# from trader import Trader
 
 utils.init()
 isWorking = False
-#enemy = Enemy(name="monster", fPos=(600.0,600.0))
-friendly = Friendly(name="villager", fPos=(650.0,650.0))
-trader = Trader(name="merchant", fPos=(800.0,800.0))
-npcs = [friendly, trader]
+A = NPC(name="a", fPos=(600.0,600.0), 10, 1)
+B = NPC(name="b", fPos=(650.0,650.0), 15, 2)
+C = NPC(name="c", fPos=(800.0,800.0), 20, 3)
+npcs = [A, B, C]
 
 for npc in npcs:
     NPC.load_sprites()
