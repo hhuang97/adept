@@ -6,19 +6,19 @@ from npc import NPC
 
 utils.init()
 isWorking = False
-A = NPC(name="a", fPos=(600.0,600.0), 10, 1)
-B = NPC(name="b", fPos=(650.0,650.0), 15, 2)
-C = NPC(name="c", fPos=(800.0,800.0), 20, 3)
-npcs = [A, B, C]
-
-for npc in npcs:
-    NPC.load_sprites()
-    NPC.move_X(4)
-    NPC.move_Y(3)
-    NPC.detectCollision(npcs)
-    NPC.blit_sprite()
-    
-NPC.update()    
+# A = NPC()
+# B = NPC(name="b", fPos=(650.0,650.0), 15, 2)
+# C = NPC(name="c", fPos=(800.0,800.0), 20, 3)
+# npcs = [A, B, C]
+# 
+# for npc in npcs:
+#     NPC.load_sprites()
+#     NPC.move_X(4)
+#     NPC.move_Y(3)
+#     NPC.detectCollision(npcs)
+#     NPC.blit_sprite()
+#     
+# NPC.update()    
 isWorking = True
 assert isWorking
 print True
