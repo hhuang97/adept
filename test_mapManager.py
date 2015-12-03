@@ -7,8 +7,8 @@ utils.init()
 isLoaded = False
 
 MapManager.loadMaps()
-MapManager.soft_load(0)
-MapManager.hard_load(1)
+MapManager.soft_load((0, 0))
+MapManager.hard_load((1, 1))
 
 for c in MapManager.loaded_chunks:
     MapManager.get_soft_load_reader_thread()
