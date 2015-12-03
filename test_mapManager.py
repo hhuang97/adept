@@ -10,10 +10,10 @@ MapManager.loadMaps()
 MapManager.soft_load((0, 0))
 MapManager.hard_load((1, 1))
 
-for c in MapManager.loaded_chunks:
-    MapManager.get_soft_load_reader_thread()
-    MapManager.soft_load_reader()
-    MapManager.offload_old_chunks()
+
+MapManager.get_soft_load_reader_thread()
+MapManager.soft_load_reader()
+MapManager.offload_old_chunks()
 
 isLoaded = True
 assert isLoaded
