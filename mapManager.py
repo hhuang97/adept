@@ -6,6 +6,7 @@ from entityManager import EntityManager
 
 from buffalo import utils
 
+
 class MapManager:
     """
     Manages chunks and map loading
@@ -54,7 +55,6 @@ class MapManager:
         x, y = MapManager.get_chunk_coords(world_pos)
         for j in range(y - 2, y + 3):
             for i in range(x - 2, x + 3):
-                EntityManager.__init__(entityList)
                 if (i, j) not in MapManager.loaded_chunks.keys():
                     MapManager.loaded_chunks[(i, j)] = Chunk(i, j)
                     MapManager.lru_chunks[(i, j)] = 2
@@ -70,7 +70,6 @@ class MapManager:
         x, y = MapManager.get_chunk_coords(world_pos)
         for j in range(y - 3, y + 4): # sides
             for i in range(x - 3, x - 2) + range(x + 3, x + 4):
-                EntityManager.__init__(entityList)
                 #MapManager.loaded_chunks[(i, j)] = Chunk(i, j)
                 if (i, j) not in MapManager.loaded_chunks:
                     package = ((x, y), (i, j), Chunk(i, j, from_other_thread=False), 0) # zero means create surface,  means render
@@ -91,7 +90,7 @@ class MapManager:
             if MapManager.lru_chunks[key] == 0:
                 if key in MapManager.loaded_chunks.keys():
                     del MapManager.loaded_chunks[key]
-                del MapManger.lru_chunks[key]
+                del MapManager.lru_chunks[key]
 
     @staticmethod
     def soft_load_reader():
