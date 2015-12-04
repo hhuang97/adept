@@ -2,7 +2,7 @@ import os
 #from multiprocessing import Process, Queue
 from threading import Thread
 from Queue import Queue
-from entityManager import EntityManager
+from entityManager import Manager
 
 from buffalo import utils
 
