@@ -16,7 +16,7 @@ class Node(Entity):
         self.rect = rect
 
 
-class QuadTree(Entity):
+class QuadTree:
 
     def __init__(self, x, y, width, height, depth=0, max_entities=4, maxdepth=20):
         # bounds are inclusive
