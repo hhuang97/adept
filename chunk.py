@@ -26,7 +26,6 @@ class Chunk:
         This is the Chunk constructor.
         It creates a Chunk at the coordinates (<x>, <y>).
         <x> and <y> are positive or negative integers.
-
         self.pos  - a 2-tuple that stores the coordinates of the Chunk
         self.defs - a dictionary that stores definitions of tiles
                     self.defs' keys are specified in the file.
@@ -149,19 +148,19 @@ class Chunk:
             for x, col in enumerate(row):
                 if col in self.defs.keys():
                     #Image/Texture Based Rendering
-                    #self.surface.blit(
-                    #    Chunk.loadSurfaceForId(col),
-                    #    (x * Chunk.TILE_SIZE, y * Chunk.TILE_SIZE)
-                    #)
+                    self.surface.blit(
+                        Chunk.loadSurfaceForId(col),
+                        (x * Chunk.TILE_SIZE, y * Chunk.TILE_SIZE)
+                    )
 
                     #Color Based Rendering
-                    self.surface.fill(
-                        self.defs[col],
-                        pygame.Rect(
-                            (x * Chunk.TILE_SIZE, y * Chunk.TILE_SIZE),
-                            (Chunk.TILE_SIZE, Chunk.TILE_SIZE),
-                        )
-                    )
+#                    self.surface.fill(
+#                        self.defs[col],
+#                        pygame.Rect(
+#                            (x * Chunk.TILE_SIZE, y * Chunk.TILE_SIZE),
+#                            (Chunk.TILE_SIZE, Chunk.TILE_SIZE),
+#                        )
+#                    )
 #        self.label.blit(self.surface)
 
     def blit(self, dest, pos):
