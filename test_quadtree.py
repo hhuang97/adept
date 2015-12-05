@@ -6,22 +6,13 @@ import random, time
 isWorking = False
 x = 1000
 entities = [Entity(random.randrange(1,10),random.randrange(1,10)) for _ in range(x)]
-index = entityManager.Manager(boundary_box=[1,1,32,32]) # max size of box
-t_i = time.time()
-for entity in entities:
-    index.insert(entity, entity.boundary_box)
-t_e = time.time()
-if t_e-t_i > 10:
-    assert isWorking
 index = entityManager.Manager(boundary_box=[1,1,32,32])
 t_i = time.time()
 for entity in entities:
     index.insert(entity, entity.boundary_box)
-
 t_e = time.time()
 if t_e-t_i > 10:
     assert isWorking
-
 print "inserting ",x," entities: ",(t_e - t_i)," seconds"
 
 print "test collisions with ",x," entities"
