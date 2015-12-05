@@ -1,4 +1,4 @@
-from entity import Entity
+from Entity import Entity
 
 
 def normalize_rect(rect):
