@@ -4,7 +4,7 @@ class Manager(QuadTree):
 
     def __init__(self, boundary_box, max_entities=10, maxdepth=20):
         x1, y1, x2, y2 = boundary_box
-        width,height = x2 - x1, y2 - y1
+        width, height = x2 - x1, y2 - y1
         midx, midy = x1 + width / 2.0, y1 + height / 2.0
         self.nodes = []
         self.children = []

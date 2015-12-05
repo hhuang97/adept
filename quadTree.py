@@ -123,3 +123,5 @@ class QuadTree:
         for node in nodes:
             self._insert_into_children(node.entity, node.rect)
 
+    def _remove(self, Entity):
+        pass
