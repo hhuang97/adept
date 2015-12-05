@@ -35,7 +35,15 @@ def test_correct_listener():
 
 def test_incorrect_listener():
 	e = Event("test",dict())
-	EventRegistry.registerEvent(e)
 	l = TestListener()
 	assert_raises(NotImplementedError, EventRegistry.registerListener,"test","test")
+	EventRegistry.registerEvent(e)
+	EventRegistry.clearListeners()
+
+def test_flexible_events():
+	e = Event("test_event_123",dict())
+	l = TestListener()
+	EventRegistry.registerListener(l.handleEvent,'test',flexible_type=True)
+	EventRegistry.registerEvent(e)
+	assert hasattr(l, 'result') and l.result == True
 	EventRegistry.clearListeners()
