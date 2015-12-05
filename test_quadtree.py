@@ -6,7 +6,7 @@ import random, time
 isWorking = False
 x = 1000
 entities = [Entity(random.randrange(1,10),random.randrange(1,10)) for _ in range(x)]
-index = entityManager.Manager(boundary_box=[1,1,32,32])
+index = entityManager.Manager(boundary_box=[1,1,32,32]) # max size of box
 t_i = time.time()
 for entity in entities:
     index.insert(entity, entity.boundary_box)
